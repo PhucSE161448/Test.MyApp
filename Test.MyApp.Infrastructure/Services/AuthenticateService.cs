@@ -50,7 +50,7 @@ namespace Test.MyApp.Infrastructure.Services
             var user = await _unitOfWork.GetRepository<User>().GetAsync(predicate: u => u.RefreshToken == refreshToken);
 
             if (user == null || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
-                return null;
+                throw new Exception("Don't have user with this refresh token");
 
             var newAccessToken = Jwt.GenerateJwtToken(user);
             var newRefreshToken = Jwt.GenerateRefreshToken();
